@@ -9,6 +9,13 @@
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600);
     html {
       height: 100%;
+      overflow: hidden;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: border-box;
     }
     body {
       background: no-repeat center center fixed;
@@ -20,19 +27,36 @@
       font-size: 16px;
       padding: 2em;
     }
+    #card {
+      left: 10%;
+      position: absolute;
+      top: 20%;
+    }
     .card {
       -webkit-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
       box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
-      box-sizing: border-box;
       border-radius: 3px;
       color: #fff;
-      left: 10%;
+      height: 430px;
       padding: 4em;
-      position: absolute;
+      position: relative;
       text-align: center;
-      top: 20%;
       width: 300px;
+    }
+    .card .settings {
+      cursor: pointer;
+      display: block;
+      position: absolute;
+      top: -5px !important;
+      right: 15px !important;
+      width: 20px;
+    }
+    .card .settings .point {
+        display: block;
+        font-size: 30px;
+        height: 10px;
+        margin: auto;
     }
     .card.chill {
       background-color: #5BC0DE;
@@ -44,7 +68,7 @@
       background-color: #F0AD4E;
     }
     .card .city {
-      margin: 0;
+      margin-top: 25px;
     }
     .card .city,
     .card .temp {
@@ -142,24 +166,64 @@
 </head>
 <body>
 
-  <div class="card">
-  	<h2 class="city"></h2>
-  	<i class="weather wi"></i>
-  	<em class="temp">
-  		<span class="degree"></span>
-  		<span class="metrics"></span>
-  	</em>
+  <div id="card">
 
-  	<div class="flipswitch">
-      <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked>
-      <label class="flipswitch-label" for="fs">
-          <div class="flipswitch-inner"></div>
-          <div class="flipswitch-switch"></div>
-      </label>
-    </div>
+    <div class="front">
+      <div class="card">
+        <span class="settings">
+          <i class="point">.</i>
+          <i class="point">.</i>
+          <i class="point">.</i>
+        </span>
+        <h2 class="city"></h2>
+      	<i class="weather wi"></i>
+      	<em class="temp">
+      		<span class="degree"></span>
+      		<i class="wi wi-celsius metrics"></i>
+      	</em>
+
+      	<!--div class="flipswitch">
+          <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked>
+          <label class="flipswitch-label" for="fs">
+              <div class="flipswitch-inner"></div>
+              <div class="flipswitch-switch"></div>
+          </label>
+        </div-->
+      </div>
+    </div><!--/.front-->
+
+    <div class="back">
+      <div class="card">
+        <span class="settings">
+          <i class="point">.</i>
+          <i class="point">.</i>
+          <i class="point">.</i>
+        </span>
+        <i class="wi wi-celsius"></i>
+        <i class="wi wi-fahrenheit"></i>
+      </div>
+    </div><!--/.back-->
+
   </div>
+ <script src="https://cdn.rawgit.com/nnattawat/flip/v1.0.19/dist/jquery.flip.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
 
+  (function($){
+    var $card = $('#card'),
+        $settings = $('.settings');
 
+    $card.flip({
+      axis: "x"
+      ,trigger: "manual"
+    })
+
+    $settings.on('click', function(evt) {
+      $card.flip('toggle');
+    })
+
+  })(jQuery);
+
+</script>
 <script type="text/javascript" charset="utf-8">
   (function($){
 
