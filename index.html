@@ -82,84 +82,141 @@
     .card .temp {
       font-style: normal;
     }
-    .flipswitch {
-      left: 50%;
-      margin-left: -43px;
-      position: absolute;
-      width: 86px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
+
+    /* Switch Flat
+    ==========================*/
+    .switch {
+    	position: relative;
+    	display: block;
+    	vertical-align: top;
+    	width: 100px;
+    	height: 30px;
+    	padding: 3px;
+    	margin: 0 10px 10px 0;
+    	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+    	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+    	border-radius: 18px;
+    	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    	cursor: pointer;
     }
-    .flipswitch input[type=checkbox] {
-      display: none;
+    .switch-input {
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+    	opacity: 0;
     }
-    .flipswitch-label {
-      display: block;
-      overflow: hidden;
-      cursor: pointer;
-      border: 1px solid #999999;
-      border-radius: 50px;
+    .switch-label {
+    	position: relative;
+    	display: block;
+    	height: inherit;
+    	font-size: 10px;
+    	text-transform: uppercase;
+    	background: #eceeef;
+    	border-radius: inherit;
+    	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
     }
-    .flipswitch-inner {
-      width: 200%;
-      margin-left: -100%;
-      -webkit-transition: margin 0.3s ease-in 0s;
-      -moz-transition: margin 0.3s ease-in 0s;
-      -ms-transition: margin 0.3s ease-in 0s;
-      -o-transition: margin 0.3s ease-in 0s;
-      transition: margin 0.3s ease-in 0s;
+    .switch-label:before, .switch-label:after {
+    	position: absolute;
+    	top: 50%;
+    	margin-top: -.5em;
+    	line-height: 1;
+    	-webkit-transition: inherit;
+    	-moz-transition: inherit;
+    	-o-transition: inherit;
+    	transition: inherit;
     }
-    .flipswitch-inner:before,
-    .flipswitch-inner:after {
-      float: left;
-      width: 50%;
-      height: 24px;
-      padding: 0;
-      line-height: 24px;
-      font-size: 18px;
-      color: white;
-      font-family: Trebuchet, Arial, sans-serif;
-      font-weight: bold;
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
+    .switch-label:before {
+    	content: attr(data-off);
+    	right: 11px;
+    	color: #aaaaaa;
+    	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
     }
-    .flipswitch-inner:before {
-      content: "°C";
-      padding-left: 12px;
-      background-color: #F0F0F0;
-      color: #83BA62;
-      text-align: left;
+    .switch-label:after {
+    	content: attr(data-on);
+    	left: 11px;
+    	color: #FFFFFF;
+    	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+    	opacity: 0;
     }
-    .flipswitch-inner:after {
-      content: "°F";
-      padding-right: 12px;
-      background-color: #EBEBEB;
-      color: #C72031;
-      text-align: right;
+    .switch-input:checked ~ .switch-label {
+    	background: #E1B42B;
+    	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
     }
-    .flipswitch-switch {
-      width: 31px;
-      margin: -3.5px;
-      background: #FFFFFF;
-      border: 1px solid #999999;
-      border-radius: 50px;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 59px;
-      -webkit-transition: all 0.3s ease-in 0s;
-      -moz-transition: all 0.3s ease-in 0s;
-      -ms-transition: all 0.3s ease-in 0s;
-      -o-transition: all 0.3s ease-in 0s;
-      transition: all 0.3s ease-in 0s;
+    .switch-input:checked ~ .switch-label:before {
+    	opacity: 0;
     }
-    .flipswitch-cb:checked + .flipswitch-label .flipswitch-inner {
-      margin-left: 0;
+    .switch-input:checked ~ .switch-label:after {
+    	opacity: 1;
     }
-    .flipswitch-cb:checked + .flipswitch-label .flipswitch-switch {
-      right: 0;
+    .switch-handle {
+    	position: absolute;
+    	top: 4px;
+    	left: 4px;
+    	width: 28px;
+    	height: 28px;
+    	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+    	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+    	border-radius: 100%;
+    	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    .switch-handle:before {
+    	content: "";
+    	position: absolute;
+    	top: 50%;
+    	left: 50%;
+    	margin: -6px 0 0 -6px;
+    	width: 12px;
+    	height: 12px;
+    	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+    	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+    	border-radius: 6px;
+    	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+    }
+    .switch-input:checked ~ .switch-handle {
+    	left: 74px;
+    	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Transition
+    ========================== */
+    .switch-label, .switch-handle {
+    	transition: All 0.3s ease;
+    	-webkit-transition: All 0.3s ease;
+    	-moz-transition: All 0.3s ease;
+    	-o-transition: All 0.3s ease;
+    }
+    .switch-flat {
+    	padding: 0;
+    	background: #FFF;
+    	background-image: none;
+    }
+    .switch-flat .switch-label {
+    	background: #FFF;
+    	border: solid 2px #eceeef;
+    	box-shadow: none;
+    }
+    .switch-flat .switch-label:after {
+    	color: #0088cc;
+    }
+    .switch-flat .switch-handle {
+    	top: 6px;
+    	left: 6px;
+    	background: #dadada;
+    	width: 22px;
+    	height: 22px;
+    	box-shadow: none;
+    }
+    .switch-flat .switch-handle:before {
+    	background: #eceeef;
+    }
+    .switch-flat .switch-input:checked ~ .switch-label {
+    	background: #FFF;
+    	border-color: #0088cc;
+    }
+    .switch-flat .switch-input:checked ~ .switch-handle {
+    	left: 72px;
+    	background: #0088cc;
+    	box-shadow: none;
     }
 
  </style>
@@ -179,16 +236,9 @@
       	<i class="weather wi"></i>
       	<em class="temp">
       		<span class="degree"></span>
-      		<i class="wi wi-celsius metrics"></i>
+      		<i id="metrics" class="wi wi-celsius"></i>
       	</em>
 
-      	<!--div class="flipswitch">
-          <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked>
-          <label class="flipswitch-label" for="fs">
-              <div class="flipswitch-inner"></div>
-              <div class="flipswitch-switch"></div>
-          </label>
-        </div-->
       </div>
     </div><!--/.front-->
 
@@ -199,13 +249,58 @@
           <i class="point">.</i>
           <i class="point">.</i>
         </span>
-        <i class="wi wi-celsius"></i>
-        <i class="wi wi-fahrenheit"></i>
+
+        <form id="optForm">
+            <fieldset>
+                <legend>
+                  <i class="wi wi-thermometer"></i>
+                </legend>
+                <i class="wi wi-celsius"></i> <input checked type="radio" name="tempMetrics" value="°C"/>
+                <i class="wi wi-fahrenheit"></i> <input type="radio" name="tempMetrics" value="°F"/>
+            </fieldset>
+        </form>
       </div>
     </div><!--/.back-->
 
   </div>
  <script src="https://cdn.rawgit.com/nnattawat/flip/v1.0.19/dist/jquery.flip.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+  (function($) {
+    var tempMetrics = $('#optForm input[name=tempMetrics]');
+
+    tempMetrics.on('change', function() {
+      var toMetric = $('input[name=tempMetrics]:checked', '#optForm').val(),
+      temp = parseFloat($('.degree').text()),
+      newTemp = getConvertedTemperature(toMetric, temp);
+      console.info(toMetric);
+      console.info(temp);
+      $('.degree').text(newTemp);
+
+      var newClass;
+      if (toMetric === '°F') {
+        newClass = "wi wi-fahrenheit";
+      } else {
+        newClass = "wi wi-celsius";
+      }
+      $('#metrics').removeClass().addClass(newClass);
+
+      $('#card').flip('toggle');
+
+    });
+
+    function getConvertedTemperature(metric, temp) {
+      var ret;
+
+      if (metric === "°F") {
+        ret = Number(Math.round((temp * 1.8 + 32) +'e1')+'e-1');
+      } else {
+        ret = Number(Math.round((temp - 32) / 1.8 +'e1')+'e-1');
+      }
+
+      return ret;
+    }
+  })(jQuery);
+</script>
 <script>
 
   (function($){
@@ -362,6 +457,7 @@
       return Math.floor(Math.random() * (max - min) + min);
 
     }
+
 
   })(jQuery);
 </script>
