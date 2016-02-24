@@ -83,140 +83,16 @@
       font-style: normal;
     }
 
-    /* Switch Flat
-    ==========================*/
-    .switch {
-    	position: relative;
-    	display: block;
-    	vertical-align: top;
-    	width: 100px;
-    	height: 30px;
-    	padding: 3px;
-    	margin: 0 10px 10px 0;
-    	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
-    	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
-    	border-radius: 18px;
-    	box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
-    	cursor: pointer;
-    }
-    .switch-input {
-    	position: absolute;
-    	top: 0;
-    	left: 0;
-    	opacity: 0;
-    }
-    .switch-label {
-    	position: relative;
-    	display: block;
-    	height: inherit;
-    	font-size: 10px;
-    	text-transform: uppercase;
-    	background: #eceeef;
-    	border-radius: inherit;
-    	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
-    }
-    .switch-label:before, .switch-label:after {
-    	position: absolute;
-    	top: 50%;
-    	margin-top: -.5em;
-    	line-height: 1;
-    	-webkit-transition: inherit;
-    	-moz-transition: inherit;
-    	-o-transition: inherit;
-    	transition: inherit;
-    }
-    .switch-label:before {
-    	content: attr(data-off);
-    	right: 11px;
-    	color: #aaaaaa;
-    	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
-    }
-    .switch-label:after {
-    	content: attr(data-on);
-    	left: 11px;
-    	color: #FFFFFF;
-    	text-shadow: 0 1px rgba(0, 0, 0, 0.2);
-    	opacity: 0;
-    }
-    .switch-input:checked ~ .switch-label {
-    	background: #E1B42B;
-    	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
-    }
-    .switch-input:checked ~ .switch-label:before {
-    	opacity: 0;
-    }
-    .switch-input:checked ~ .switch-label:after {
-    	opacity: 1;
-    }
-    .switch-handle {
-    	position: absolute;
-    	top: 4px;
-    	left: 4px;
-    	width: 28px;
-    	height: 28px;
-    	background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
-    	background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
-    	border-radius: 100%;
-    	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    }
-    .switch-handle:before {
-    	content: "";
-    	position: absolute;
-    	top: 50%;
-    	left: 50%;
-    	margin: -6px 0 0 -6px;
-    	width: 12px;
-    	height: 12px;
-    	background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
-    	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
-    	border-radius: 6px;
-    	box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
-    }
-    .switch-input:checked ~ .switch-handle {
-    	left: 74px;
-    	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Transition
-    ========================== */
-    .switch-label, .switch-handle {
-    	transition: All 0.3s ease;
-    	-webkit-transition: All 0.3s ease;
-    	-moz-transition: All 0.3s ease;
-    	-o-transition: All 0.3s ease;
-    }
-    .switch-flat {
-    	padding: 0;
-    	background: #FFF;
-    	background-image: none;
-    }
-    .switch-flat .switch-label {
-    	background: #FFF;
-    	border: solid 2px #eceeef;
-    	box-shadow: none;
-    }
-    .switch-flat .switch-label:after {
-    	color: #0088cc;
-    }
-    .switch-flat .switch-handle {
-    	top: 6px;
-    	left: 6px;
-    	background: #dadada;
-    	width: 22px;
-    	height: 22px;
-    	box-shadow: none;
-    }
-    .switch-flat .switch-handle:before {
-    	background: #eceeef;
-    }
-    .switch-flat .switch-input:checked ~ .switch-label {
-    	background: #FFF;
-    	border-color: #0088cc;
-    }
-    .switch-flat .switch-input:checked ~ .switch-handle {
-    	left: 72px;
-    	background: #0088cc;
-    	box-shadow: none;
+    .loading {
+      background: no-repeat center center rgba(255,255,255,0.50);
+      background-image: url("http://blog.teamtreehouse.com/wp-content/uploads/2015/05/InternetSlowdown_Day.gif");
+      background-image: url("https://themarketingoak.files.wordpress.com/2015/07/circle-loading-animation.gif");
+      height:100%;
+			width:100%;
+			position:fixed;
+			left:0;
+			top:0;
+			z-index:1 !important;
     }
 
  </style>
@@ -261,67 +137,13 @@
         </form>
       </div>
     </div><!--/.back-->
-
   </div>
+  <div class="loading"></div>
  <script src="https://cdn.rawgit.com/nnattawat/flip/v1.0.19/dist/jquery.flip.min.js" type="text/javascript" charset="utf-8"></script>
-<script>
-  (function($) {
-    var tempMetrics = $('#optForm input[name=tempMetrics]');
-
-    tempMetrics.on('change', function() {
-      var toMetric = $('input[name=tempMetrics]:checked', '#optForm').val(),
-      temp = parseFloat($('.degree').text()),
-      newTemp = getConvertedTemperature(toMetric, temp);
-      console.info(toMetric);
-      console.info(temp);
-      $('.degree').text(newTemp);
-
-      var newClass;
-      if (toMetric === '°F') {
-        newClass = "wi wi-fahrenheit";
-      } else {
-        newClass = "wi wi-celsius";
-      }
-      $('#metrics').removeClass().addClass(newClass);
-
-      $('#card').flip('toggle');
-
-    });
-
-    function getConvertedTemperature(metric, temp) {
-      var ret;
-
-      if (metric === "°F") {
-        ret = Number(Math.round((temp * 1.8 + 32) +'e1')+'e-1');
-      } else {
-        ret = Number(Math.round((temp - 32) / 1.8 +'e1')+'e-1');
-      }
-
-      return ret;
-    }
-  })(jQuery);
-</script>
-<script>
-
-  (function($){
-    var $card = $('#card'),
-        $settings = $('.settings');
-
-    $card.flip({
-      axis: "x"
-      ,trigger: "manual"
-    })
-
-    $settings.on('click', function(evt) {
-      $card.flip('toggle');
-    })
-
-  })(jQuery);
-
-</script>
 <script type="text/javascript" charset="utf-8">
-  (function($){
+(function($){
 
+    // Object containing the application state
     var App = {
     	"apiKey": {
     		"flickr" : "28602178605addc1a7730e3c90733b22",
@@ -359,14 +181,27 @@
     	}
     };
 
+    /*
+    * Grab the ip of the user
+    *
+    */
     $.getJSON('http://ipinfo.io', function(data) {
+
+      // Extrapolate the latitude e longitude
     	var lat = data.loc.split(",")[0],
     			lon = data.loc.split(",")[1];
 
+      // Find weather of user location
     	getWeather(lat, lon);
 
     }, "jsonp");
 
+    /**
+     * function getWeather
+     * Makes an ajax call to OpenWeatherAPI and build and object for render view
+     * @param  {int}
+     * @param  {int}
+     */
     function getWeather(lat, lon) {
     	var url = getOpenWeatherApiUrl(lat, lon);
 
@@ -384,19 +219,34 @@
     	}, "jsonp");
     }
 
+    /**
+     * function getPhoto
+     * Makes an ajax call to FlickrAPI and grab photos with the climate condition of user location
+     * @param  {String}
+     * @param  {Function}
+     */
     function getPhoto(climateCondition, cb) {
     	var url = getFlickrApiUrl(climateCondition);
 
     	$.get(url, function(photos) {
-    		var rand = getRandomArbitrary(0, photos.photos.photo.length),
-    		    photoUrl = "https://farm" + photos.photos.photo[rand].farm +
-            					".staticflickr.com/" + photos.photos.photo[rand].server + "/" +
-            					photos.photos.photo[rand].id + "_" + photos.photos.photo[rand].secret + ".jpg";
+            var photos = photos.photos,
+    		    rand = getRandomArbitrary(0, photos.photo.length),
+    		    photoUrl = "https://farm" + photos.photo[rand].farm +
+            					".staticflickr.com/" + photos.photo[rand].server + "/" +
+            					photos.photo[rand].id + "_" + photos.photo[rand].secret + ".jpg";
 
     		cb(photoUrl);
-    	}, "jsonp");
+    	}, "jsonp")
+    	.done(function() {
+    	  $('.loading').fadeOut();
+    	});
     }
 
+    /**
+     * function renderView
+     * Render the view with custom attributes based on wheather user location
+     * @param  {[Object]}
+     */
     function renderView(viewObj) {
 
     	App.$city.text(viewObj.city);
@@ -411,6 +261,12 @@
     	});
     }
 
+    /**
+     * function getTemperatureColor
+     * Obtain a color based on temperature degree
+     * @param  {int}
+     * @return {String}
+     */
     function getTemperatureColor(temp) {
     		var tempColor = "";
 
@@ -425,6 +281,13 @@
     		return tempColor;
     }
 
+    /**
+     * function getOpenWeatherApiUrl
+     * Obtain the complete API url with setted custom params
+     * @param  {int}
+     * @param  {int}
+     * @return {String}
+     */
     function getOpenWeatherApiUrl(lat, lon) {
 
     	return App.apiUrl.openWeather +
@@ -434,6 +297,13 @@
         		"&appid=" + App.apiKey.openWeather;
     }
 
+
+    /**
+     * function getFlickrApiUrl
+     * Obtain the complete API url with setted custom params
+     * @param  {String}
+     * @return {String}
+     */
     function getFlickrApiUrl(climateCondition) {
 
     	return App.apiUrl.flickr +
@@ -446,12 +316,25 @@
         		"&jsoncallback=?";
     }
 
+    /**
+     * function getIconClass
+     * Obtain the corrispondend icon class of weather icon
+     * @param  {String}
+     * @return {String}
+     */
     function getIconClass(iconID) {
 
       return App.icons[iconID];
 
     }
 
+    /**
+     * function getRandomArbitrary
+     * Obtain a random number in a certain range
+     * @param  {int}
+     * @param  {int}
+     * @return {int}
+     */
     function getRandomArbitrary(min, max) {
 
       return Math.floor(Math.random() * (max - min) + min);
@@ -460,6 +343,79 @@
 
 
   })(jQuery);
+</script>
+<script>
+  (function($) {
+
+  /** @type {jQuery Object} [input containing the switcher temperature] */
+  var tempMetrics = $('#optForm input[name=tempMetrics]'),
+      newClass;
+
+  // Subscribe to change event when user select the desired metric
+  tempMetrics.on('change', function() {
+    // Get the desired metric from input
+    var toMetric = $('input[name=tempMetrics]:checked', '#optForm').val(),
+    // Get the floated temperature
+    temp = parseFloat($('.degree').text()),
+    // Get new converted temperature
+    newTemp = getConvertedTemperature(toMetric, temp);
+
+    // Change the value of degree element
+    $('.degree').text(newTemp);
+
+    if (toMetric === '°F') {
+      newClass = "wi wi-fahrenheit";
+    } else {
+      newClass = "wi wi-celsius";
+    }
+
+    // Reset and set the new metric class
+    $('#metrics').removeClass().addClass(newClass);
+
+    // Back to main view
+    $('#card').flip('toggle');
+
+  });
+
+  /**
+   * [getConvertedTemperature Does a temperure conversion]
+   * @param  {String} metric  Celsius of Fahrenheit
+   * @param  {int} temp       Temperature value
+   * @return {int}            Converted Temperature
+   */
+  function getConvertedTemperature(metric, temp) {
+    var ret;
+
+    switch(metric) {
+      case "°F":
+        ret = Number(Math.round((temp * 1.8 + 32) + 'e1') + 'e-1');
+        break;
+      case "°C":
+        ret = Number(Math.round((temp - 32) / 1.8 + 'e1') + 'e-1');
+        break;
+    }
+    return ret;
+  }
+})(jQuery);
+</script>
+<script>
+
+  // Start card flip functionality
+  (function($){
+    var $card = $('#card'),
+        $settings = $('.settings');
+
+    $card.flip({
+      axis: "x"
+      ,trigger: "manual"
+    })
+
+    $settings.on('click', function(evt) {
+      $card.flip('toggle');
+    })
+
+  })(jQuery);
+
 </script>
 </body>
 </html>
