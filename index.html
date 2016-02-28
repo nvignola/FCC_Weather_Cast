@@ -143,104 +143,128 @@
 <script type="text/javascript" charset="utf-8">
 (function($){
 
-    // Object containing the application state
+	var WeatherApp = (function() {
     var App = {
-    	"apiKey": {
-    		"flickr" : "28602178605addc1a7730e3c90733b22",
-    		"openWeather" : "44db6a862fba0b067b1930da0d769e98"
-    	},
-    	"apiUrl": {
-    		"flickr": "https://api.flickr.com/services/rest/?method=flickr.photos.search",
-    		"openWeather": "http://api.openweathermap.org/data/2.5/weather?"
-    	},
-    	"units": "metric",
-    	"$container" : $('body'),
-    	"$card": $('.card'),
-    	"$city": $('.city'),
-    	"$weather": $('.weather'),
-    	"$temp": $('.temp .degree'),
-    	"icons": {
-    	  "01d" : "wi-day-sunny",
-    	  "01n" : "wi-night-clear",
-    	  "02d" : "wi-day-cloudy",
-    	  "02n" : "wi-night-alt-cloudy",
-    	  "03d" : "wi-cloud",
-    	  "03n" : "wi-cloud",
-    	  "04d" : "wi-cloudy",
-    	  "04n" : "wi-cloudy",
-    	  "09d" : "wi-rain",
-    	  "09n" : "wi-rain",
-    	  "10d" : "wi-day-rain",
-    	  "10n" : "wi-night-alt-rain",
-    	  "11n" : "wi-day-thunderstorm",
-    	  "11d" : "wi-day-thunderstorm",
-    	  "13n" : "wi-snow",
-    	  "13d" : "wi-snow",
-    	  "50d" : "wi-fog",
-    	  "50n" : "wi-fog"
-    	}
+      "apiKey": {
+        "flickr": "28602178605addc1a7730e3c90733b22",
+        "openWeather": "44db6a862fba0b067b1930da0d769e98"
+      },
+      "apiUrl": {
+        "flickr": "https://api.flickr.com/services/rest/?method=flickr.photos.search",
+        "openWeather": "http://api.openweathermap.org/data/2.5/weather?"
+      },
+      "units": "metric",
+      "$container": $('body'),
+      "$card": $('.card'),
+      "$city": $('.city'),
+      "$weather": $('.weather'),
+      "$temp": $('.temp .degree'),
+      "$loader": $('.loading'),
+      "icons": {
+        "01d": "wi-day-sunny",
+        "01n": "wi-night-clear",
+        "02d": "wi-day-cloudy",
+        "02n": "wi-night-alt-cloudy",
+        "03d": "wi-cloud",
+        "03n": "wi-cloud",
+        "04d": "wi-cloudy",
+        "04n": "wi-cloudy",
+        "09d": "wi-rain",
+        "09n": "wi-rain",
+        "10d": "wi-day-rain",
+        "10n": "wi-night-alt-rain",
+        "11n": "wi-day-thunderstorm",
+        "11d": "wi-day-thunderstorm",
+        "13n": "wi-snow",
+        "13d": "wi-snow",
+        "50d": "wi-fog",
+        "50n": "wi-fog"
+      }
+    };
+    /**
+     * function doAjaxCall
+     * Makes an ajax call
+     * @param  {String}
+     * @param  {function}
+     * @param  {function} Optional
+     */
+    function doAjaxCall(url, cb, promiseDoneCb) {
+
+      var promiseDoneCb = promiseDoneCb || function() {console.log('Ajax call terminate')};
+
+      $.get(url, cb,"jsonp").done(promiseDoneCb);
+
     };
 
-    /*
-    * Grab the ip of the user
-    *
-    */
-    $.getJSON('http://ipinfo.io', function(data) {
-
-      // Extrapolate the latitude e longitude
-    	var lat = data.loc.split(",")[0],
-    			lon = data.loc.split(",")[1];
-
-      // Find weather of user location
-    	getWeather(lat, lon);
-
-    }, "jsonp");
 
     /**
      * function getWeather
-     * Makes an ajax call to OpenWeatherAPI and build and object for render view
-     * @param  {int}
-     * @param  {int}
+     * Makes an ajax call to OpenWeatherAPI
+     * @param  {JSON Object}
      */
-    function getWeather(lat, lon) {
-    	var url = getOpenWeatherApiUrl(lat, lon);
+   function getWeather(locationData) {
 
-    	$.get(url, function(weather) {
-    		var viewObj = {
-    			"city" : weather.name,
-    			"climateCondition" : weather.weather[0].main,
-    			"iconID" : getIconClass(weather.weather[0].icon),
-    			"temperature": Number(Math.round(weather.main.temp +'e1')+'e-1'),
-    			"temperatureColor" : getTemperatureColor(weather.main.temp)
-    		};
+      // Extrapolate the latitude e longitude
+      var lat = locationData.loc.split(",")[0],
+          lon = locationData.loc.split(",")[1],
+          url = getOpenWeatherApiUrl(lat, lon);
 
-    		renderView(viewObj);
+      doAjaxCall(url, collectWeatherData);
+    };
 
-    	}, "jsonp");
-    }
+
 
     /**
-     * function getPhoto
+     * function collectWeatherData
+     * Collect data about weather user location, pass them to renderView()
+     * and get the background photo for the application container
+     * @param  {JSON Object}
+     */
+    function collectWeatherData(weather) {
+
+      var viewObj = {
+        "city" : weather.name,
+        "climateCondition" : weather.weather[0].main,
+        "iconID" : getIconClass(weather.weather[0].icon),
+        "temperature": Number(Math.round(weather.main.temp +'e1')+'e-1'),
+        "temperatureColor" : getTemperatureColor(weather.main.temp)
+      };
+
+      renderView(viewObj);
+      getBgPhoto(weather.weather[0].main);
+
+    };
+
+
+    /**
+     * function getBgPhoto
      * Makes an ajax call to FlickrAPI and grab photos with the climate condition of user location
      * @param  {String}
-     * @param  {Function}
      */
-    function getPhoto(climateCondition, cb) {
-    	var url = getFlickrApiUrl(climateCondition);
+    function getBgPhoto(climateCondition) {
+      var url = getFlickrApiUrl(climateCondition),
+          promiseDone = function() {
+            App.$loader.fadeOut();
+          };
 
-    	$.get(url, function(photos) {
-            var photos = photos.photos,
-    		    rand = getRandomArbitrary(0, photos.photo.length),
-    		    photoUrl = "https://farm" + photos.photo[rand].farm +
-            					".staticflickr.com/" + photos.photo[rand].server + "/" +
-            					photos.photo[rand].id + "_" + photos.photo[rand].secret + ".jpg";
+      doAjaxCall(url, collectPhotoData, promiseDone);
+    };
 
-    		cb(photoUrl);
-    	}, "jsonp")
-    	.done(function() {
-    	  $('.loading').fadeOut();
-    	});
-    }
+
+    /**
+     * function collectPhotoData
+     * Build the photo url
+     * @param  {JSON Object}
+     */
+    function collectPhotoData (photos) {
+      var photos = photos.photos,
+      rand = getRandomArbitrary(0, photos.photo.length),
+      photoUrl = "https://farm" + photos.photo[rand].farm +
+                ".staticflickr.com/" + photos.photo[rand].server + "/" +
+                photos.photo[rand].id + "_" + photos.photo[rand].secret + ".jpg";
+
+      App.$container.css('backgroundImage', "url(" + photoUrl + ")");
+    };
 
     /**
      * function renderView
@@ -249,17 +273,12 @@
      */
     function renderView(viewObj) {
 
-    	App.$city.text(viewObj.city);
-    	App.$card.addClass(viewObj.temperatureColor);
-    	App.$weather.addClass(viewObj.iconID);
-    	App.$temp.html(viewObj.temperature);
+      App.$city.text(viewObj.city);
+      App.$card.addClass(viewObj.temperatureColor);
+      App.$weather.addClass(viewObj.iconID);
+      App.$temp.html(viewObj.temperature);
 
-    	getPhoto(viewObj.climateCondition, function(url){
-
-    		App.$container.css('backgroundImage', "url(" + url + ")");
-
-    	});
-    }
+    };
 
     /**
      * function getTemperatureColor
@@ -268,18 +287,18 @@
      * @return {String}
      */
     function getTemperatureColor(temp) {
-    		var tempColor = "";
+        var tempColor = "";
 
-    		if(temp <= 12) {
-    			tempColor = "chill";
-    		} else if (temp <= 25) {
-    			tempColor = "ideal";
-    		} else {
-    			tempColor = "warm";
-    		}
+        if(temp <= 12) {
+          tempColor = "chill";
+        } else if (temp <= 25) {
+          tempColor = "ideal";
+        } else {
+          tempColor = "warm";
+        }
 
-    		return tempColor;
-    }
+        return tempColor;
+    };
 
     /**
      * function getOpenWeatherApiUrl
@@ -290,12 +309,12 @@
      */
     function getOpenWeatherApiUrl(lat, lon) {
 
-    	return App.apiUrl.openWeather +
-        		"lat=" + lat +
-        		"&lon=" + lon +
-        		"&units=" + App.units +
-        		"&appid=" + App.apiKey.openWeather;
-    }
+      return App.apiUrl.openWeather +
+            "lat=" + lat +
+            "&lon=" + lon +
+            "&units=" + App.units +
+            "&appid=" + App.apiKey.openWeather;
+    };
 
 
     /**
@@ -306,15 +325,15 @@
      */
     function getFlickrApiUrl(climateCondition) {
 
-    	return App.apiUrl.flickr +
-        		"&api_key=" + App.apiKey.flickr +
-        		"&format=json" +
-        		"&content_type=1" +
-        		"&accuracy=1" +
-        		"&sort=relevance" +
-        		"&text=weather " + climateCondition.toLowerCase() +
-        		"&jsoncallback=?";
-    }
+      return App.apiUrl.flickr +
+            "&api_key=" + App.apiKey.flickr +
+            "&format=json" +
+            "&content_type=1" +
+            "&accuracy=1" +
+            "&sort=relevance" +
+            "&text=weather " + climateCondition.toLowerCase() +
+            "&jsoncallback=?";
+    };
 
     /**
      * function getIconClass
@@ -326,7 +345,7 @@
 
       return App.icons[iconID];
 
-    }
+    };
 
     /**
      * function getRandomArbitrary
@@ -339,10 +358,23 @@
 
       return Math.floor(Math.random() * (max - min) + min);
 
-    }
+    };
+
+    return {
+      init: function() {
+        /*
+        * Grab the ip of the user
+        *
+        */
+        doAjaxCall('http://ipinfo.io', getWeather);
+      }
+    };
+  })();
+
+ WeatherApp.init();
 
 
-  })(jQuery);
+})(jQuery);
 </script>
 <script>
   (function($) {
